@@ -5,6 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RegionService } from '../../../core/services/region.service'; 
 import { Region } from '../../../core/models/region.model'; 
+import { CountryService } from '../../../core/services/country.service'; 
+import { Country } from '../../../core/models/country.model'; 
 import { FormComponent } from '../../../shared/form/form.component';
 import { TableComponent } from '../../../shared/table/table.component';
 import { ModalComponent } from '../../../shared/modal/modal.component';
@@ -18,15 +20,29 @@ import { SearchComponent } from '../../../shared/search/search.component';
 })
 export class RegionListComponent implements OnInit {
   regions: Region[] = [];
+  countryNames: Map<number, string> = new Map();
 
-  constructor(private regionService: RegionService, private router: Router) {}
+  constructor(private regionService: RegionService, private countryService: CountryService, private router: Router) {}
 
   ngOnInit() {
     this.loadRegions();
   }
 
   loadRegions() {
-    this.regionService.getAll().subscribe(data => this.regions = data);
+    this.regionService.getAll().subscribe(data => {
+      this.regions = data;
+      this.loadCountryNames();
+    });
+  }
+
+  loadCountryNames() {
+    this.regions.forEach(region => {
+      if (region.countryId && !this.countryNames.has(region.countryId)) {
+        this.countryService.getById(region.countryId).subscribe(country => {
+          this.countryNames.set(region.countryId, country.name);
+        });
+      }
+    });
   }
 
   editRegion(id: number): void {
@@ -41,5 +57,9 @@ export class RegionListComponent implements OnInit {
 
   navigateToCreate(): void {
     this.router.navigate(['/region/create']);
+  }
+
+  getCountryName(countryId: number): string {
+    return this.countryNames.get(countryId) || 'Desconocido';
   }
 }

@@ -27,12 +27,12 @@ export class CityService {
         try {
           return JSON.parse(response) as City;
         } catch (e) {
-          console.error('Error al parsear la respuesta como JSON:', e);
-          throw new Error('Error al procesar la respuesta del servidor');
+          console.warn('La respuesta no es un JSON válido. Se recibe como texto:', response);
+          return { name: response } as City;
         }
       }),
       catchError((error) => {
-        console.error('Error al crear el país:', error);
+        console.error('Error al crear la región:', error);
         return throwError(() => error);
       })
     );
