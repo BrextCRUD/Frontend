@@ -61,6 +61,7 @@ export class CountryFormComponent implements OnInit {
         },
         error => {
           console.error('Error al crear el país:', error);
+          this.router.navigate(['/']);
         }
       );
     }
