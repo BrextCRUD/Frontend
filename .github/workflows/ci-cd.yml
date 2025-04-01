@@ -1,0 +1,34 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias y Angular CLI
+        run: |
+          npm install
+          npm install -g @angular/cli  # Instalar CLI globalmente
+
+      - name: Compilar aplicación
+        run: |
+          ng build --configuration=production --output-path=dist/
+          touch dist/browser.nojekyll
+
+      - name: Desplegar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist/browser

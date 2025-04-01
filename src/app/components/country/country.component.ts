@@ -102,13 +102,13 @@ export class CountryComponent implements OnInit {
   }
 
   confirmDelete() {
-    if (this.countryToDelete) {
-      this.countryService.delete(this.countryToDelete.id).subscribe(() => {
-        this.loadCountries();
-        this.showModal = false;
-        this.countryToDelete = null;
-      });
-    }
+    // if (this.countryToDelete) {
+    //   this.countryService.delete(this.countryToDelete.id).subscribe(() => {
+    //     this.loadCountries();
+    //     this.showModal = false;
+    //     this.countryToDelete = null;
+    //   });
+    // }
   }
 
   closeModal() {
