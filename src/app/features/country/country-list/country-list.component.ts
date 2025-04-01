@@ -26,7 +26,7 @@ export class CountryListComponent implements OnInit {
   }
 
   loadCountries() {
-    this.countryService.getCountries().subscribe(data => this.countries = data);
+    this.countryService.getAll().subscribe(data => this.countries = data);
   }
 
   editCountry(id: number): void {
@@ -37,5 +37,9 @@ export class CountryListComponent implements OnInit {
     if (confirm('¿Estás seguro de eliminar este país?')) {
       this.countryService.delete(id).subscribe(() => this.loadCountries());
     }
+  }
+
+  navigateToCreate(): void {
+    this.router.navigate(['/country/create']);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Country } from '../models/country.model';
 
 @Injectable({
@@ -12,16 +13,28 @@ export class CountryService {
 
   constructor(private http: HttpClient) { }
 
-  getCountries(): Observable<Country[]> {
+  getAll(): Observable<Country[]> {
     return this.http.get<Country[]>(this.apiUrl);
   }
 
+  getById(id: number): Observable<Country> {
+    return this.http.get<Country>(`${this.apiUrl}/${id}`);
+  }
+
   create(country: Country): Observable<Country> {
-    return this.http.post<Country>(this.apiUrl, country);
+    return this.http.post<Country>(this.apiUrl, country).pipe(
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   update(country: Country): Observable<Country> {
-    return this.http.put<Country>(`${this.apiUrl}/${country.id}`, country);
+    return this.http.put<Country>(`${this.apiUrl}/${country.id}`, country).pipe(
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   delete(id: number): Observable<void> {

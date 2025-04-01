@@ -38,7 +38,7 @@ export class CountryComponent implements OnInit {
   }
 
   loadCountries() {
-    this.countryService.getCountries().subscribe(countries => {
+    this.countryService.getAll().subscribe(countries => {
       this.countries = countries;
       this.filteredCountries = countries; // Inicializa la lista filtrada
     });
@@ -68,12 +68,12 @@ export class CountryComponent implements OnInit {
 
     const updatedCountry: Country = { ...this.selectedCountry!, ...this.countryForm.value };
 
-    this.countryService.update(updatedCountry).subscribe(() => {
-      this.loadCountries(); // Recargar los países después de editar
-      this.showForm = false; // Ocultar el formulario
-      this.selectedCountry = null; // Limpiar el país seleccionado
-      this.countryForm.reset(); // Resetear el formulario después de editar
-    });
+    // this.countryService.update(updatedCountry).subscribe(() => {
+    //   this.loadCountries(); // Recargar los países después de editar
+    //   this.showForm = false; // Ocultar el formulario
+    //   this.selectedCountry = null; // Limpiar el país seleccionado
+    //   this.countryForm.reset(); // Resetear el formulario después de editar
+    // });
   }
 
   // Método para buscar y filtrar los países

@@ -1,6 +1,6 @@
 <div class="container">
     <h2>Lista de Países</h2>
-    <button routerLink="/country/create" class="btn btn-primary mb-3">Agregar País</button>
+    <button class="btn btn-primary mb-3" (click)="navigateToCreate()">Agregar País</button>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -14,7 +14,7 @@
           <td>{{ country.id }}</td>
           <td>{{ country.name }}</td>
           <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="editCountry(country.id)">Editar</button>
+            <button *ngIf="country.id !== undefined" class="btn btn-primary btn-sm me-2" (click)="editCountry(country.id)">Editar</button>
             <button (click)="deleteCountry(country.id!)" class="btn btn-danger btn-sm">Eliminar</button>
           </td>
         </tr>

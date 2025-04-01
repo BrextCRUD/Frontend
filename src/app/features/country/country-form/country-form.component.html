@@ -1,1 +1,17 @@
-<p>country-form works!</p>
+<div class="container mt-4">
+    <h2 class="text-center">{{ countryId ? 'Editar País' : 'Crear País' }}</h2>
+    <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3">
+        <label>Nombre del País</label>
+        <input formControlName="name" class="form-control" />
+        <small *ngIf="countryForm.get('name')?.invalid && countryForm.get('name')?.touched" class="text-danger">
+          El nombre es obligatorio y debe tener al menos 3 caracteres.
+        </small>
+      </div>
+      <button type="submit" class="btn btn-success" [disabled]="countryForm.invalid">
+        {{ countryId ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button class="btn btn-secondary ms-2" (click)="cancel()">Cancelar</button>
+    </form>
+  </div>
+  
