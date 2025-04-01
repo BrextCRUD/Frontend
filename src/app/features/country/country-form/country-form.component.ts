@@ -53,7 +53,7 @@ export class CountryFormComponent implements OnInit {
       country.id = this.countryId;
       this.countryService.update(country).subscribe(
         () => {
-          this.router.navigate(['/Frontend']);
+          this.router.navigate(['/']);
         },
         (error) => {
           let errorMessage = 'Ha ocurrido un error desconocido';
@@ -70,7 +70,7 @@ export class CountryFormComponent implements OnInit {
     } else {
       this.countryService.create(country).subscribe(
         (response) => {
-          this.router.navigate(['/Frontend']);
+          this.router.navigate(['/']);
         },
         (error) => {
           let errorMessage = 'Ha ocurrido un error desconocido';
