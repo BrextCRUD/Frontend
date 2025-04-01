@@ -56,12 +56,10 @@ export class CountryFormComponent implements OnInit {
     } else {
       this.countryService.create(country).subscribe(
         response => {
-          console.log('Respuesta de la creación:', response); // Ver lo que devuelve el backend
           this.router.navigate(['/']);
         },
         error => {
           console.error('Error al crear el país:', error);
-          this.router.navigate(['/']);
         }
       );
     }
