@@ -1,0 +1,26 @@
+<div class="container">
+    <h2>Lista de Departamentos</h2>
+    <button class="btn btn-primary mb-3" (click)="navigateToCreate()">Agregar Departamento</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>País</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let region of regions">
+          <td>{{ region.id }}</td>
+          <td>{{ region.name }}</td>
+          <td>{{ region.countryId }}</td>
+          <td>
+            <button *ngIf="region.id !== undefined" class="btn btn-primary btn-sm me-2" (click)="editRegion(region.id)">Editar</button>
+            <button (click)="deleteRegion(region.id!)" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

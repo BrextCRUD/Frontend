@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { City } from '../models/city.model';
 
 @Injectable({
@@ -8,23 +9,44 @@ import { City } from '../models/city.model';
 })
 export class CityService {
 
-  private apiUrl = 'https://brextcrud-api-g2dhcpgsfmbzere9.brazilsouth-01.azurewebsites.net/api/city'; 
+  private apiUrl = 'https://brextcrud-api-g2dhcpgsfmbzere9.brazilsouth-01.azurewebsites.net/api/city'; // Asegúrate de que este URL sea correcto
 
   constructor(private http: HttpClient) { }
 
-  getCities(): Observable<City[]> {
+  getAll(): Observable<City[]> {
     return this.http.get<City[]>(this.apiUrl);
   }
 
-  addCity(city: City): Observable<City> {
-    return this.http.post<City>(this.apiUrl, city);
+  getById(id: number): Observable<City> {
+    return this.http.get<City>(`${this.apiUrl}/${id}`);
   }
 
-  updateCity(city: City): Observable<City> {
-      return this.http.put<City>(`${this.apiUrl}/${city.id}`, city);
-    }
+  create(city: City): Observable<City> {
+    return this.http.post<string>(this.apiUrl, city, { responseType: 'text' as 'json' }).pipe(
+      map(response => {
+        try {
+          return JSON.parse(response) as City;
+        } catch (e) {
+          console.error('Error al parsear la respuesta como JSON:', e);
+          throw new Error('Error al procesar la respuesta del servidor');
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al crear el país:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
-  deleteCity(id: number): Observable<void> {
+  update(city: City): Observable<City> {
+    return this.http.put<City>(`${this.apiUrl}/${city.id}`, city).pipe(
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

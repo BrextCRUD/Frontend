@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RegionService } from '../../../core/services/region.service'; 
 import { CountryService } from '../../../core/services/country.service'; 
+import { Region } from '../../../core/models/region.model'; 
 import { Country } from '../../../core/models/country.model'; 
 import { FormComponent } from '../../../shared/form/form.component';
 import { TableComponent } from '../../../shared/table/table.component';
@@ -11,49 +13,53 @@ import { ModalComponent } from '../../../shared/modal/modal.component';
 import { SearchComponent } from '../../../shared/search/search.component';
 
 @Component({
-  selector: 'app-country-form',
+  selector: 'app-region-form',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './country-form.component.html',
-  styleUrl: './country-form.component.scss'
+  templateUrl: './region-form.component.html',
+  styleUrl: './region-form.component.scss'
 })
-export class CountryFormComponent implements OnInit {
-  countryForm!: FormGroup;
-  countryId: number | null = null;
+export class RegionFormComponent implements OnInit {
+  regionForm!: FormGroup;
+  regionId: number | null = null;
+  countries: Country[] = [];
 
   constructor(
     private fb: FormBuilder,
+    private regionService: RegionService,
     private countryService: CountryService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.countryForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]]
+    this.regionForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      countryId: ['', Validators.required]
     });
+
+    this.countryService.getAll().subscribe(data => this.countries = data);
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.countryId = +id;
-        this.countryService.getById(this.countryId).subscribe(data => {
-          this.countryForm.patchValue(data);
+        this.regionId = +id;
+        this.regionService.getById(this.regionId).subscribe(data => {
+          this.regionForm.patchValue(data);
         });
       }
     });
   }
 
   onSubmit() {
-    if (this.countryForm.invalid) return;
-
-    const country: Country = this.countryForm.value;
-    
-
-    if (this.countryId) {
-      country.id = this.countryId;
-      this.countryService.update(country).subscribe(
+    if (this.regionForm.invalid) return;
+  
+    const region: Region = this.regionForm.value;
+  
+    if (this.regionId) {
+      region.id = this.regionId;
+      this.regionService.update(region).subscribe(
         () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/regions']);
         },
         (error) => {
           let errorMessage = 'Ha ocurrido un error desconocido';
@@ -63,14 +69,14 @@ export class CountryFormComponent implements OnInit {
             errorMessage = error; 
           }
   
-          alert('Error al actualizar el país: ' + errorMessage); 
-          console.error('Error al actualizar el país:', error); 
+          alert('Error al actualizar el departamento: ' + errorMessage); 
+          console.error('Error al actualizar el departamento:', error); 
         }
       );
     } else {
-      this.countryService.create(country).subscribe(
+      this.regionService.create(region).subscribe(
         (response) => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/regions']);
         },
         (error) => {
           let errorMessage = 'Ha ocurrido un error desconocido';
@@ -80,14 +86,14 @@ export class CountryFormComponent implements OnInit {
             errorMessage = error; 
           }
   
-          alert('Error al crear el país: ' + errorMessage); 
-          console.error('Error al crear el país:', error); 
+          alert('Error al crear el departamento: ' + errorMessage); 
+          console.error('Error al crear el departamento:', error); 
         }
       );
     }
   }
 
   cancel(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/regions']);
   }
 }

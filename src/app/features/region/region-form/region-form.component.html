@@ -1,0 +1,25 @@
+<div class="container mt-4">
+    <h2 class="text-center">{{ regionId ? 'Editar Departamento' : 'Crear Departamento' }}</h2>
+    <form [formGroup]="regionForm" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3">
+        <label>Nombre del Departamento</label>
+        <input formControlName="name" class="form-control" />
+        <small *ngIf="regionForm.get('name')?.invalid && regionForm.get('name')?.touched" class="text-danger">
+          El nombre es obligatorio y debe tener al menos 3 caracteres.
+        </small>
+      </div>
+      <div class="form-group mb-3">
+        <label>País</label>
+        <select formControlName="countryId" class="form-control">
+          <option *ngFor="let country of countries" [value]="country.id">
+            {{ country.name }}
+          </option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success" [disabled]="regionForm.invalid">
+        {{ regionId ? 'Actualizar' : 'Guardar' }}
+      </button>
+      <button class="btn btn-secondary ms-2" (click)="cancel()">Cancelar</button>
+    </form>
+  </div>
+  
