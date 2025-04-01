@@ -1,0 +1,12 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-group" *ngFor="let field of fields">
+      <label for="{{field.name}}">{{field.label}}</label>
+      <input type="text" class="form-control" [formControlName]="field.name" id="{{field.name}}">
+      <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched" class="text-danger">
+        Este campo es obligatorio.
+      </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Guardar</button>
+  </form>
+  

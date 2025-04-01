@@ -1,0 +1,17 @@
+<div class="container">
+    <app-table
+      [data]="countries"
+      [columnHeaders]="['Name']"
+      (onEdit)="editCountry($event)"
+      (onDelete)="deleteCountry($event)">
+    </app-table>
+  
+    <div *ngIf="showForm">
+      <app-form
+        [formData]="selectedCountry"
+        [fields]="[{ name: 'name', label: 'Country Name' }]"
+        (onSubmit)="addCountry()">
+      </app-form>
+    </div>
+  </div>
+  
