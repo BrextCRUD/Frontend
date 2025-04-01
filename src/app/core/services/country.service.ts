@@ -16,11 +16,15 @@ export class CountryService {
     return this.http.get<Country[]>(this.apiUrl);
   }
 
-  addCountry(country: Country): Observable<Country> {
+  create(country: Country): Observable<Country> {
     return this.http.post<Country>(this.apiUrl, country);
   }
 
-  deleteCountry(id: number): Observable<void> {
+  update(country: Country): Observable<Country> {
+    return this.http.put<Country>(`${this.apiUrl}/${country.id}`, country);
+  }
+
+  delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

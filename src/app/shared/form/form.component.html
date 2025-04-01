@@ -1,12 +1,11 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="form-group" *ngFor="let field of fields">
-      <label for="{{field.name}}">{{field.label}}</label>
-      <input type="text" class="form-control" [formControlName]="field.name" id="{{field.name}}">
-      <div *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched" class="text-danger">
-        Este campo es obligatorio.
+<div class="card p-4">
+    <h2>{{ title }}</h2>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <div *ngFor="let field of fields">
+        <label>{{ field.label }}</label>
+        <input class="form-control" [type]="field.type" formControlName="{{ field.name }}" />
       </div>
-    </div>
-    
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Guardar</button>
-  </form>
+      <button class="btn btn-primary mt-3" type="submit" [disabled]="formGroup.invalid">Guardar</button>
+    </form>
+  </div>
   

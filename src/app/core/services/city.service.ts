@@ -20,6 +20,10 @@ export class CityService {
     return this.http.post<City>(this.apiUrl, city);
   }
 
+  updateCity(city: City): Observable<City> {
+      return this.http.put<City>(`${this.apiUrl}/${city.id}`, city);
+    }
+
   deleteCity(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

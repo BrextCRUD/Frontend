@@ -1,17 +1,11 @@
 <div class="container">
+    <button class="btn btn-primary mb-3" (click)="showCreateForm()">Crear país</button>
+    <app-search (searchText)="onSearch($event)"></app-search>
     <app-table
       [data]="countries"
       [columnHeaders]="['Name']"
-      (onEdit)="editCountry($event)"
+      (onEdit)="editCountry()"
       (onDelete)="deleteCountry($event)">
     </app-table>
-  
-    <div *ngIf="showForm">
-      <app-form
-        [formData]="selectedCountry"
-        [fields]="[{ name: 'name', label: 'Country Name' }]"
-        (onSubmit)="addCountry()">
-      </app-form>
-    </div>
-  </div>
+</div>
   

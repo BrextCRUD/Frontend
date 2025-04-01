@@ -1,1 +1,24 @@
-<p>country-list works!</p>
+<div class="container">
+    <h2>Lista de Países</h2>
+    <button routerLink="/country/create" class="btn btn-primary mb-3">Agregar País</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let country of countries">
+          <td>{{ country.id }}</td>
+          <td>{{ country.name }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="editCountry(country.id)">Editar</button>
+            <button (click)="deleteCountry(country.id!)" class="btn btn-danger btn-sm">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

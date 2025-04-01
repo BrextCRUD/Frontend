@@ -8,23 +8,18 @@ import { CommonModule } from '@angular/common';
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-
-  @Input() showModal: boolean = false;
-  @Input() message: string = '';
-  @Output() onConfirm: EventEmitter<void> = new EventEmitter();
-  @Output() onCancel: EventEmitter<void> = new EventEmitter();
+  @Input() isVisible: boolean = false; 
+  @Input() modalTitle: string = '';
+  @Input() modalMessage: string = '';
+  @Output() closeModal = new EventEmitter<void>(); 
+  @Output() confirmAction = new EventEmitter<void>(); 
 
   close() {
-    this.showModal = false;
+    this.closeModal.emit(); 
   }
 
   confirm() {
-    this.onConfirm.emit();
-    this.close();
-  }
-
-  cancel() {
-    this.onCancel.emit();
-    this.close();
+    this.confirmAction.emit(); 
+    this.close(); 
   }
 }

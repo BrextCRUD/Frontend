@@ -9,26 +9,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss'
 })
+
 export class FormComponent {
-  @Input() formData: any = {}; 
-  @Input() fields: any[] = []; 
-  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  @Input() title: string = '';
+  @Input() formGroup!: FormGroup;
+  @Input() fields: { label: string; name: string; type: string }[] = [];
+  @Output() submitForm = new EventEmitter<void>();
 
-  form: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({});
-  }
-
-  ngOnInit() {
-    this.fields.forEach(field => {
-      this.form.addControl(field.name, this.fb.control(this.formData[field.name] || '', Validators.required));
-    });
-  }
-
-  submit() {
-    if (this.form.valid) {
-      this.onSubmit.emit(this.form.value);
+  onSubmit() {
+    if (this.formGroup.valid) {
+      this.submitForm.emit();
     }
   }
 }
