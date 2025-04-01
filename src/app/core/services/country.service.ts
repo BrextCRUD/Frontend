@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Country } from '../models/country.model';
 
 @Injectable({
@@ -22,8 +22,17 @@ export class CountryService {
   }
 
   create(country: Country): Observable<Country> {
-    return this.http.post<Country>(this.apiUrl, country).pipe(
+    return this.http.post<string>(this.apiUrl, country, { responseType: 'text' as 'json' }).pipe(
+      map(response => {
+        try {
+          return JSON.parse(response) as Country;
+        } catch (e) {
+          console.error('Error al parsear la respuesta como JSON:', e);
+          throw new Error('Error al procesar la respuesta del servidor');
+        }
+      }),
       catchError((error) => {
+        console.error('Error al crear el país:', error);
         return throwError(() => error);
       })
     );
